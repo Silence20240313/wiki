@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'vue/no-unused-components':'off'
+    'vue/no-unused-components': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',  // 禁用不允许使用 @ts-ignore/@ts-nocheck 注释的规则
   }
 }

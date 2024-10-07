@@ -59,6 +59,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent,onMounted,ref } from 'vue';
 import axios from 'axios';
 
@@ -68,6 +69,7 @@ export default defineComponent({
   setup(){
     console.log("setup");
     const ebooks = ref();
+
     onMounted( () =>{
       console.log("onMounted");
       axios.get("http://localhost:8080/ebook/list?name=Spring").then((response) => {
