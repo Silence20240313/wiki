@@ -49,7 +49,7 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="ebooks">
+      <a-list :grid="{ gutter: 20, column: 3 }" item-layout="vertical" size="large" :pagination="pagination" :data-source="ebooks">
 
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
