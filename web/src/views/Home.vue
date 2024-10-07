@@ -49,7 +49,7 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <a-list :grid="{ gutter: 20, column: 3 }" item-layout="vertical" size="large" :pagination="pagination" :data-source="ebooks">
+      <a-list :grid="{ gutter: 20, column: 3 }" item-layout="vertical" size="large" :data-source="ebooks">
 
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
@@ -115,7 +115,7 @@ export default defineComponent({
 
     onMounted( () =>{
       console.log("onMounted");
-      axios.get("http://localhost:8080/ebook/list?name=Spring").then((response) => {
+      axios.get("http://localhost:8080/ebook/list").then((response) => {
         console.log(response)
         const data = response.data;
         console.log(data.content);
@@ -133,3 +133,14 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+  .ant-avatar{
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 8%;
+    margin: 5px 0;
+  }
+
+</style>
