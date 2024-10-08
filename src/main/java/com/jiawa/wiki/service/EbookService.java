@@ -26,6 +26,7 @@ public class EbookService {
         if (!ObjectUtils.isEmpty(req.getName())){
             criteria.andNameLike("%"+req.getName()+"%");
         }
+
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
        /* List<EbookResp> respList = new ArrayList<>();

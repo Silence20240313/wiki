@@ -115,7 +115,7 @@ export default defineComponent({
 
     onMounted( () =>{
       console.log("onMounted");
-      axios.get("http://localhost:8080/ebook/list").then((response) => {
+      axios.get( "/ebook/list").then((response) => {
         console.log(response)
         const data = response.data;
         console.log(data.content);
@@ -142,5 +142,4 @@ export default defineComponent({
     border-radius: 8%;
     margin: 5px 0;
   }
-
 </style>
