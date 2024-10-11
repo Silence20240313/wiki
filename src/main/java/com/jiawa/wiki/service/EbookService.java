@@ -10,6 +10,7 @@ import com.jiawa.wiki.req.EbookSaveReq;
 import com.jiawa.wiki.resp.EbookQueryResp;
 import com.jiawa.wiki.resp.PageResp;
 import com.jiawa.wiki.util.CopyUtil;
+import com.jiawa.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class EbookService {
 
     @Autowired
     private EbookMapper ebookMapper;
+
+    @Autowired
+    private SnowFlake snowFlake;
+
     public PageResp<EbookQueryResp> list(EbookQueryReq req){
 
         // 设置检索条件22-24行
@@ -62,10 +67,15 @@ public class EbookService {
          Ebook ebook = CopyUtil.copy(req, Ebook.class);
          if (ObjectUtils.isEmpty(req.getId())){
              // 新增
+             ebook.setId(snowFlake.nextId());
              ebookMapper.insert(ebook);
          }else{
              // 更新
              ebookMapper.updateByPrimaryKey(ebook);
          }
+    }
+
+    public void delete(Long id) {
+        ebookMapper.deleteByPrimaryKey(id);
     }
 }
