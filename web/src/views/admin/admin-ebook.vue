@@ -4,9 +4,23 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <p>
-        <a-button type="primary" @click="add()" size="large">
-          新增
-        </a-button>
+        <a-form layout="inline" :model="param">
+          <a-form-item>
+            <a-input v-model:value="param.name" placeholder="名称">
+            </a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+              查询
+            </a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="add()">
+              新增
+            </a-button>
+          </a-form-item>
+        </a-form>
+
       </p>
       <a-table
           :columns="columns"
@@ -30,7 +44,7 @@
                 cancel-text="否"
                 @confirm="handleDelete(record.id)"
             >
-              <a-button type="danger">
+              <a-button type="primary" danger>
                 删除
               </a-button>
             </a-popconfirm>
@@ -69,14 +83,19 @@
 // @ts-nocheck
 import { defineComponent, onMounted, ref } from 'vue';
 import axios from 'axios';
+import {message} from 'ant-design-vue';
+import {Tool} from "@/util/tool";
+
 
 export default defineComponent({
   name: 'AdminEbook',
   setup() {
+    const param = ref();
+    param.value = {};
     const ebooks = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 2,
+      pageSize: 10,
       total: 0
     });
     const loading = ref(false);
@@ -127,16 +146,21 @@ export default defineComponent({
       axios.get("/ebook/list",{
           params:{
             page:params.page,
-            size:params.size
+            size:params.size,
+            name:param.value.name
           }
         }).then((response) => {
         loading.value = false;
         const data = response.data;
-        ebooks.value = data.content.list;
+        if (data.success){
+          ebooks.value = data.content.list;
 
-        // 重置分页按钮
-        pagination.value.current = params.page;
-        pagination.value.total = data.content.total;
+          // 重置分页按钮
+          pagination.value.current = params.page;
+          pagination.value.total = data.content.total;
+        }else {
+            message.error(data.massage);
+        }
       });
     };
 
@@ -154,20 +178,32 @@ export default defineComponent({
     const ebook = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+
     const handleModalOk = () => {
       modalLoading.value = true;
-      axios.post("/ebook/save",ebook.value).then((response) =>{
+      modalLoading.value = true;
+
+      console.log(111)
+
+      axios.post("/ebook/save", ebook.value).then((response) =>{
+        modalLoading.value = true;
+
+        console.log(222)
         const data = response.data; // data=commonResp
         if (data.success){
           modalVisible.value = false;
-          modalLoading.value = false;
 
+          console.log(333)
           // 重新加载列表
           handleQuery({
             page:pagination.value.current,
             size:pagination.value.pageSize
           });
+        }else{
+          message.error(data.message);
         }
+
+        console.log(444)
       });
     };
 
@@ -177,7 +213,7 @@ export default defineComponent({
      */
     const edit = (record:any) => {
       modalVisible.value = true;
-      ebook.value = record
+      ebook.value = Tool.copy(record);
     };
     /**
      * 新增
@@ -212,11 +248,13 @@ export default defineComponent({
     });
 
     return {
+      param,
       ebooks,
       pagination,
       columns,
       loading,
       handleTableChange,
+      handleQuery,
 
       edit,
       add,
