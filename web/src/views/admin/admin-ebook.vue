@@ -36,9 +36,13 @@
         <template v-slot:category="{ text, record }">
           <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
         </template>
-
         <template v-slot:action="{ text, record }">
           <a-space size="small">
+           <router-link to="/admin/doc">
+             <a-button type="primary">
+              文档管理
+             </a-button>
+           </router-link>
             <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
@@ -262,6 +266,11 @@ export default defineComponent({
           level1.value = [];
           level1.value = Tool.array2Tree(categorys, 0);
           console.log("树形结构：", level1.value);
+          // 加载完分类后，再加载电子书，否则如果分类树加载很慢，则电子书渲染会报错
+          handleQuery({
+            page: 1,
+            size: pagination.value.pageSize,
+          });
         } else {
           message.error(data.message);
         }
@@ -281,10 +290,6 @@ export default defineComponent({
 
     onMounted(() => {
       handleQueryCategory();
-      handleQuery({
-        page:1,
-        size:pagination.value.pageSize
-      });
     });
 
     return {
