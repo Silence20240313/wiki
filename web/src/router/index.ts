@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/home.vue'
 import About from '../views/about.vue'
+import AdminUser from '../views/admin/admin-user.vue'
 import AdminEbook from '../views/admin/admin-ebook.vue'
 import AdminCategory from '../views/admin/admin-category.vue'
 
@@ -19,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
   },
   {
+    path: '/admin/user',
+    name: 'AdminUser',
+    component: AdminUser
+  },
+ {
     path: '/admin/ebook',
     name: 'AdminEbook',
     component: AdminEbook
