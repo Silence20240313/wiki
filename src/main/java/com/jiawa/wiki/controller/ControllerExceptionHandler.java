@@ -36,7 +36,7 @@ public class ControllerExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler(value = BindException.class)
+    @ExceptionHandler(value = BusinessException.class)
     @ResponseBody
     public CommonResp validExceptionHandler(BusinessException e) {
         CommonResp commonResp = new CommonResp();
